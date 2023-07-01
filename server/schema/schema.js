@@ -26,11 +26,12 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    createAuthor(id: ID!, name: String, age: Int): Author
-    createBook(id: ID!, name: String, genre: String, authorId: ID!): Book
+    createAuthor(name: String, age: Int): Author
+    createBook(name: String, genre: String, authorId: ID!): Book
   }
 `;
 // ID! id ko la null - bat buoc
+// mongoDB tu tao ID -> ko truyen ID vo query
 
 /* Mutation: Tuong tac data voi DB */
 

@@ -1,15 +1,41 @@
 const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
+const mongoose = require("mongoose");
 
 // Load schema & resolvers
 const typeDefs = require("./schema/schema");
 const resolvers = require("./resolver/resolver");
+
+// load db method
+const mongoDataMethods = require("./data/db");
+
+// Connect to MongooseDB
+const connectDB = async () => {
+  try {
+    await mongoose.connect(
+      "mongodb+srv://mikitran721:tPP2JFOEBgfcP8SH@graphqldb.psmrpmw.mongodb.net/?retryWrites=true&w=majority",
+      {
+        // useCreateIndex: true,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        // useFindAndModify: false,
+      }
+    );
+    console.log(`MongoDB connected`); //bao cho moi lan ket noi t.cong
+  } catch (error) {
+    console.log(error.message);
+    process.exit(1); //cho app xap nguon
+  }
+};
+
+connectDB();
 
 async function startApolloServer() {
   const app = express();
   const server = new ApolloServer({
     typeDefs,
     resolvers,
+    context: () => ({ mongoDataMethods }),
   });
   await server.start();
 
